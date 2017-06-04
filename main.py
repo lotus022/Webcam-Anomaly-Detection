@@ -1,4 +1,4 @@
-from anomoly_server import Server
+from anomaly_server import Server
 
 def main():
 
