@@ -6,8 +6,8 @@ from pyftpdlib.servers import FTPServer
 
 from keras.models import load_model
 
-from mlcam import image_tools
-from mlcam import log
+from anomaly_server import image_tools
+from anomaly_server import log
 
 from datetime import datetime
 import os
@@ -22,7 +22,7 @@ last_files = {}
 
 class Server(object):
 
-    def __init__(self, host='0.0.0.0', port=21, home_path='ftp', training=True, model_path=os.path.join('models', 'anomoly_model.h5')):
+    def __init__(self, host='0.0.0.0', port=21, home_path='ftp', training=False, model_path=os.path.join('models', 'anomoly_model.h5')):
 
         self.host = host
         self.port = port

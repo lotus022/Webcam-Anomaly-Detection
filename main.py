@@ -1,9 +1,14 @@
 from anomaly_server import Server
 
+import config
+
 def main():
 
-    s = Server(training=False)
-    s.add_cam('yuncam', 'aBc1to3')
+    s = Server(training=config.TRAIN)
+
+    for user, passw in config.USERS.items():
+        s.add_cam(user, passw)
+
     s.run()
 
 if __name__ == '__main__':
