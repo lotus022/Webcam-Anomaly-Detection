@@ -1,3 +1,4 @@
+from anomoly_server import Server
 
 def main():
 
