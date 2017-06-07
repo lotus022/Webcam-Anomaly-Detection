@@ -20,6 +20,7 @@ EPOCHS = 18
 input_shape = (720, 1280, 3)
 
 def chunks(l, n):
+    """Generator for generating chunks of a list."""
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
@@ -61,15 +62,28 @@ def main():
             train_images.update({os.path.join(NOISE_PATH, fn) : 0})
 
     filenames = list(train_images.keys())
-    random.shuffle(filenames)
+    random.shuffle(filenames) # Randomize Data
 
     def generate_data(chunk_size):
+        """
+        Loads data into memory chunk by chunk.
+
+        Parameters
+        ----------
+        chunk_size : int
+            The size of each chunk to generate
+
+        Yields
+        ------
+        Tuple
+            A tuple (X, y) containing a single chunk of training data
+        """
         for chunk in chunks(filenames, chunk_size):
             X = np.array([imread(fn) for fn in chunk]) / 255
             y = np.array([train_images[fn] for fn in chunk])
             yield (X, y)
 
-    for X, y in generate_data(CHUNK_SIZE):
+    for X, y in generate_data(CHUNK_SIZE): # Fit the model w/each chunk and save
 
         model.fit(X, y, batch_size=BATCH_SIZE, epochs=EPOCHS, validation_split=.2, shuffle=True)
         model.save(MODEL_PATH)

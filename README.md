@@ -10,7 +10,7 @@ An FTP server that logs anomalous motion from a camera stream.
 
 ## What
 When working with basic FTP webcam streams, it's easy to end up with disk-fulls of image data.
-A basic solution is to delete old footage automatically, but this can end up deleting important events. 
+A basic solution is to delete old footage automatically, but this can end up deleting important events.
 Another idea is to analyze the change between every image and only save them if enough pixels changed
 indicating motion. While this works, in situations where the camera is positioned in front of trees or towards
 clouds, the system will often end up with a plethora of false positives. This project aims to fix this by
@@ -38,3 +38,11 @@ anomaly. This way only key frames stay while pictures that only show leaves movi
 1. Run ```main.py```
 2. Check the images folder to see if images are being saved
 3. Close the window or press Ctrl-C to stop the server
+
+### Example Delta Images
+
+#### Anomaly
+![Anomaly](https://user-images.githubusercontent.com/6625384/26891644-64de5080-4b7b-11e7-8960-57ce75c99e28.jpg)
+
+#### Noise
+![Noise](https://user-images.githubusercontent.com/6625384/26891700-964a0c90-4b7b-11e7-8a69-99525a83bfcb.jpg)

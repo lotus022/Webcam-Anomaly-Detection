@@ -15,9 +15,9 @@ def _fn_to_date(fn):
     return file_.replace('.jpg','').replace(',',':')
 
 def image_taken(fn, username):
-
+    """Log the capture of an image."""
     _write(['CAP', username, _fn_to_date(fn)])
 
 def anomoly(fn, username):
-
+    """Log an amomaly found with the given image."""
     _write(['ANO', username, _fn_to_date(fn)])
