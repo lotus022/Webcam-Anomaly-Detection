@@ -1,6 +1,9 @@
+from keras.callbacks import ModelCheckpoint
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.layers import Conv2D, MaxPooling2D
 from keras.models import Sequential
+
+import matplotlib.pyplot as plt
 
 from skimage.io import imread
 import numpy as np
@@ -9,9 +12,9 @@ import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-ANOMOLY_PATH = os.path.join('training', 'anomoly')
+ANOMALY_PATH = os.path.join('training', 'anomaly')
 NOISE_PATH = os.path.join('training', 'noise')
-MODEL_PATH = os.path.join('models', 'anomoly_model.h5')
+MODEL_PATH = os.path.join('models', 'anomaly_model.h5')
 
 CHUNK_SIZE = 500
 BATCH_SIZE = 6
@@ -53,9 +56,9 @@ def main():
 
     train_images = {}
 
-    for fn in os.listdir(ANOMOLY_PATH):
+    for fn in os.listdir(ANOMALY_PATH):
         if fn.endswith('.jpg'):
-            train_images.update({os.path.join(ANOMOLY_PATH, fn) : 1})
+            train_images.update({os.path.join(ANOMALY_PATH, fn) : 1})
 
     for fn in os.listdir(NOISE_PATH):
         if fn.endswith('.jpg'):
@@ -83,10 +86,23 @@ def main():
             y = np.array([train_images[fn] for fn in chunk])
             yield (X, y)
 
+    last_history = None
+
     for X, y in generate_data(CHUNK_SIZE): # Fit the model w/each chunk and save
 
-        model.fit(X, y, batch_size=BATCH_SIZE, epochs=EPOCHS, validation_split=.2, shuffle=True)
-        model.save(MODEL_PATH)
+        checkpoint = ModelCheckpoint(os.path.join('models', MODEL_PATH), 
+                                     monitor='val_loss', 
+                                     verbose=0, 
+                                     save_best_only=True)
+
+        history = model.fit(X, y, batch_size=BATCH_SIZE, epochs=EPOCHS, validation_split=.2, shuffle=True, callbacks=[checkpoint])
+
+        last_history = (history.history['loss'], history.history['val_loss'])
+        
+    plt.legend(['TrainLoss', 'TestLoss'])
+    plt.plot(last_history[0])
+    plt.plot(last_history[1])
+    plt.show()
 
 if __name__ == '__main__':
     main()

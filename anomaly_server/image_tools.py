@@ -53,9 +53,9 @@ def create_delta_image(a, b, fn="", save=False):
 
     return dimage
 
-def is_anomoly(anomoly_model, dimage):
+def is_anomaly(anomaly_model, dimage):
     """Uses given keras model to predict the dimage"""
-    return anomoly_model.predict(np.array([dimage]))[0,0] == 1
+    return anomaly_model.predict(np.array([dimage]))[0,0] == 1
 
 def create_crop_image(dimage, actual, fn="", save=False):
     """

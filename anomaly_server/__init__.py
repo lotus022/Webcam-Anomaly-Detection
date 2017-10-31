@@ -15,14 +15,14 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 save_folder = None
-anomoly_model = None
+anomaly_model = None
 collect_images = True
 
 last_files = {}
 
 class Server(object):
 
-    def __init__(self, host='0.0.0.0', port=21, home_path='ftp', training=False, model_path=os.path.join('models', 'anomoly_model.h5')):
+    def __init__(self, host='0.0.0.0', port=21, home_path='ftp', training=False, model_path=os.path.join('models', 'anomaly_model.h5')):
         """
         Creates a server
 
@@ -53,14 +53,14 @@ class Server(object):
 
         self.auth = DummyAuthorizer()
 
-        global anomoly_model, save_folder, collect_images
+        global anomaly_model, save_folder, collect_images
 
         collect_images = training
 
         if collect_images:
             save_folder = "training"
         else:
-            anomoly_model = load_model(model_path)
+            anomaly_model = load_model(model_path)
             save_folder = "images"
 
     def add_cam(self, username, passw):
@@ -146,12 +146,12 @@ def process(fn, username):
         if image_tools.is_different(a, b):
 
             dimage = image_tools.create_delta_image(a, b, fn=fn.replace('.jpg','.d.jpg'), save=True)#
-            anom = image_tools.is_anomoly(anomoly_model, dimage)
+            anom = image_tools.is_anomaly(anomaly_model, dimage)
 
             if not anom:
                 os.remove(last_file)
             else:
-                log.anomoly(fn, username)
+                log.anomaly(fn, username)
 
         else:
             os.remove(last_file)
