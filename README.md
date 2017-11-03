@@ -12,11 +12,9 @@ An FTP server that logs anomalous motion from a camera stream.
 When working with basic FTP webcam streams, it's easy to end up with disk-fulls of image data.
 A basic solution is to delete old footage automatically, but this can end up deleting important events.
 Another idea is to analyze the change between every image and only save them if enough pixels changed
-indicating motion. While this works, in situations where the camera is positioned in front of trees or towards
-clouds, the system will often end up with a plethora of false positives. This project aims to fix this by
-using machine learning to determine what is anomalous motion. It does this by creating a delta image which
-is pixels of the past image minus the pixels of the current image and classifying it as either noise or an
-anomaly. This way only key frames stay while pictures that only show leaves moving are discarded.
+indicating motion. While this works sometimes, in situations where the camera is positioned in front of trees or towards
+clouds the system will often end up with a plethora of false positives. This project aims to fix this by
+using machine learning to determine what is anomalous motion. It does this by creating a delta image (dI = |old-new|) and classifying it as either noise or an anomaly. This way only key frames stay while pictures that only show leaves moving are discarded.
 
 ## Usage
 
